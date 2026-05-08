@@ -11,7 +11,19 @@ class TestFleetVehicleInspectionTemplate(TransactionCase):
         cls.inspection = cls.env["fleet.vehicle.inspection"]
         cls.inspection_item = cls.env["fleet.vehicle.inspection.item"]
         cls.inspection_template = cls.env["fleet.vehicle.inspection.template"]
-        cls.vehicle = cls.env.ref("fleet.vehicle_5").id
+        cls.brand = cls.env["fleet.vehicle.model.brand"].create({"name": "Test Brand"})
+        cls.model = cls.env["fleet.vehicle.model"].create(
+            {
+                "name": "Test Model",
+                "brand_id": cls.brand.id,
+            }
+        )
+        cls.vehicle = cls.env["fleet.vehicle"].create(
+            {
+                "name": "Test Vehicle",
+                "model_id": cls.model.id,
+            }
+        )
 
         cls.item_01 = cls.inspection_item.create({"name": "Lights"})
 
@@ -61,7 +73,7 @@ class TestFleetVehicleInspectionTemplate(TransactionCase):
 
         cls.inspection = cls.inspection.create(
             {
-                "vehicle_id": cls.vehicle,
+                "vehicle_id": cls.vehicle.id,
                 "inspection_template_id": cls.inspection_template_01.id,
             }
         )
