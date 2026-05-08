@@ -16,5 +16,5 @@ class FleetVehicleInspectionTemplate(models.Model):
         "inspection_template_id",
         string="Inspection Template Lines",
         copy=True,
-        auto_join=True,
+        bypass_search_access=True,
     )

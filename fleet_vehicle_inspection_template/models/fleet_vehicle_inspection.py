@@ -1,7 +1,7 @@
 # Copyright 2021 to TODAY, Marcel Savegnago - Escodoo
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import Command, api, fields, models
 
 
 class FleetVehicleInspection(models.Model):
@@ -24,11 +24,11 @@ class FleetVehicleInspection(models.Model):
             self.name = self.inspection_template_id.name
             self.note = self.inspection_template_id.note
 
-            inspection_lines = [(5, 0, 0)]
+            inspection_lines = [Command.clear()]
             for line in self.inspection_template_id.inspection_template_line_ids.sorted(
                 "sequence"
             ):
                 data = self._compute_line_data_for_template_change(line)
-                inspection_lines.append((0, 0, data))
+                inspection_lines.append(Command.create(data))
 
             self.inspection_line_ids = inspection_lines
